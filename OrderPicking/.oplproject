@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ASCII"?><project>
+	<version>1.0</version>
+	<configs>
+		<config default="true" name="Configuration1" category="opl">
+			<ref name="OrderPicking.mod" type="model">
+			</ref>
+			<ref name="OrderPicking(3).dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="ConfigurationAllBinary" category="opl">
+			<ref name="OrderPickingAllBinary.mod" type="model">
+			</ref>
+			<ref name="OrderPicking(3).dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="Configuration(2)" category="opl">
+			<ref name="OrderPickingAllBinary.mod" type="model">
+			</ref>
+			<ref name="OrderPicking(2).dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="BachingOriginal" category="opl">
+			<ref name="OrderAndPodBatching001.dat" type="data">
+			</ref>
+			<ref name="OrderAndPodBatchingOriginal.mod" type="model">
+			</ref>
+		</config>
+		<config default="false" name="BatchingSimplify" category="opl">
+			<ref name="OrderAndPodBatching001.dat" type="data">
+			</ref>
+			<ref name="OrderAndPodBatchingSimplify.mod" type="model">
+			</ref>
+		</config>
+		<config default="false" name="BachingParticular" category="opl">
+			<ref name="OrderAndPodBatchingTrivial.dat" type="data">
+			</ref>
+			<ref name="OrderAndPodBatchingSimplify.mod" type="model">
+			</ref>
+		</config>
+		<config default="false" name="StorageAssignment(2nd)Original" category="opl">
+			<ref name="StorageAssignment(2nd).mod" type="model">
+			</ref>
+			<ref name="StorageAssignment(2nd).dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="StorageAssignment(2nd)Simplified" category="opl">
+			<ref name="StorageAssignment(2nd)Simiplified.mod" type="model">
+			</ref>
+			<ref name="StorageAssignment(2nd).dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="TSP" category="opl">
+			<ref name="TSPfromGPT.mod" type="model">
+			</ref>
+			<ref name="TSPfromGPT.dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="ConfigurationBest" category="opl">
+			<ref name="OrderPickingBest.mod" type="model">
+			</ref>
+			<ref name="OrderPicking(2).dat" type="data">
+			</ref>
+		</config>
+		<config default="false" name="ConfigurationBest(3)" category="opl">
+			<ref name="OrderPickingBest.mod" type="model">
+			</ref>
+			<ref name="OrderPicking(3).dat" type="data">
+			</ref>
+		</config>
+	</configs>
+	
+</project>
