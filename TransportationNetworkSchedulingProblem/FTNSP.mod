@@ -3,6 +3,7 @@
  * Author: iefcyang
  * Creation Date: Apr 5, 2023 at 1:38:37 PM
  *********************************************/
+ 
 using CP;
 
 // Number of Nodes (machines)
@@ -90,8 +91,7 @@ subject to
 {
  	forall( m in Nodes ) noOverlap( nodeSequences[m], movingTimes[m],1);
  	forall( j in Jobs, oPrev in operations, o in operations : oPrev.jobID == o.jobID == j && o.seq == oPrev.seq + 1 )
-		endBeforeStart( opLoads[oPrev], opLoads[o]);
- 
-		
+		endBeforeStart( opLoads[oPrev], opLoads[o]);		
 }
 
+// almost done only data left
