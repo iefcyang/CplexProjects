@@ -18,11 +18,10 @@ tuple TimeIndexes
 	key int nID;
 	key int fromPDID;
 	key int toPDID;
-	int serialID;
 }
 
 // Define possible index combinations              
-{TimeIndexes} formToTimeIndexes = {<n,f,t,f*NumberOfPDPoints[n]+t>|n in Nodes, f,t in 0..NumberOfPDPoints[n]-1 };
+{TimeIndexes} formToTimeIndexes = {<n,f,t>|n in Nodes, f,t in 0..NumberOfPDPoints[n]-1 };
 //int total = sum( j in Nodes) NumberOfPDPoints[j];
 
 // Read in from-to times
@@ -30,8 +29,10 @@ int FromToTimes[formToTimeIndexes ]=...;
 
 tuple triplet { int t1; int t2; int v; }
 
-{triplet} tt[m in Nodes] = 
-  { <s,e,setup[m][t1][t2]> | s,e in 0..NumberOfPDPoints[m]-1 : 0 <=FromToTimes[<m,s,e>]} ;
+
+//
+{triplet} movingTimes[n in Nodes] = 
+  { <s,e,FromToTimes[<n,s mod NumberOfPDPoints[n],  e div NumberOfPDPoints[n] >]> | s,e in 0..NumberOfPDPoints[n]*NumberOfPDPoints[n]-1 } ;
   
 // We need to 
 
@@ -70,20 +71,24 @@ tuple Operation
 // Set the sequence of the last operation in each job
 int jobLast[j in Jobs ] = max( o in operations : o.jobID == j ) o.seq;
 
-
+int deliveryTypes[o in operations] =  o.fromPDID * NumberOfPDPoints[o.nodeID]+o.toPDID ;
 
 // Decision variables
 
 dvar interval opLoads[o in operations ] size FromToTimes[<o.nodeID,o.fromPDID,o.toPDID>];
+
+// typese opLoads[o]
 // dvar interval opMoves[o in operations ];
-dvar sequence nodeSequences[ m in Nodes] in all( o in operations: o.nodeID == m ) opLoads[o] types all(m in Nodes) taskType[m];
+dvar sequence nodeSequences[ m in Nodes] 
+in all( o in operations: o.nodeID == m ) opLoads[o] 
+types all( o in operations: o.nodeID == m ) deliveryTypes[o];
  
 
 minimize max( j in Jobs, o in operations : o.jobID == j && o.seq == jobLast[j]) endOf( opLoads[o] );
 
 subject to
 {
- 	forall( m in Nodes ) noOverlap( nodeSequences[m], tt[m],1);
+ 	forall( m in Nodes ) noOverlap( nodeSequences[m], movingTimes[m],1);
  	forall( j in Jobs, oPrev in operations, o in operations : oPrev.jobID == o.jobID == j && o.seq == oPrev.seq + 1 )
 		endBeforeStart( opLoads[oPrev], opLoads[o]);
  
