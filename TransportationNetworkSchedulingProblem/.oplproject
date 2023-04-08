@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="ASCII"?><project>
-	<version>1.0</version>
-	<configs>
-		<config default="true" name="Configuration1" category="opl">
-			<ref name="FTNSP.mod" type="model">
+    	
+    <version>1.0</version>
+    	
+    <configs>
+        		
+        <config default="true" name="Configuration1" category="opl">
+            			
+            <ref name="FTNSP.mod" type="model">
 			</ref>
-			<ref name="FTNSP.dat" type="data">
+            			
+            <ref name="FTNSP001.dat" type="data">
 			</ref>
-		</config>
-	</configs>
-	
+            		
+        </config>
+        	
+    </configs>
+    	
+
 </project>
