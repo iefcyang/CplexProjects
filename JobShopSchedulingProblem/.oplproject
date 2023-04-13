@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?><project>
+    	
+    <version>1.0</version>
+    	
+    <configs>
+        		
+        <config default="true" name="RunDisjunctive6x6" category="opl">
+            			
+            <ref name="DisjunctiveJSP.mod" type="model">
+			</ref>
+            			
+            <ref name="6x6JSP.dat" type="data">
+			</ref>
+            		
+        </config>
+        		
+        <config default="false" name="RunTimeIndexed6x6" category="opl">
+            			
+            <ref name="TimeIndexedJSP.mod" type="model">
+			</ref>
+            			
+            <ref name="6x6JSP.dat" type="data">
+			</ref>
+            		
+        </config>
+        	
+    </configs>
+    	
+
+</project>
