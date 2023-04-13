@@ -34,7 +34,7 @@ machineIDandTime Ops[jobs,machines] = ...;
 int worstTime = sum( j in jobs, h in machines) Ops[j,h].time;
 range slots = 0..worstTime-1;
 
-int P[j in jobs, i in machines] = [ Ops[h,j].time,  h in Machines && Ops[h,j].mID == i ];
+int P[j in jobs, i in machines ] = max( h in machines : Ops[j,h].mID == i ) Ops[j,h].time;
 
  dvar int+ Cmax;  // Makespan
 
@@ -52,21 +52,19 @@ int P[j in jobs, i in machines] = [ Ops[h,j].time,  h in Machines && Ops[h,j].mI
     	sum( t in slots ) x[i,j,t] == 1;
     
     // Cmax is greater or equal to each operation's end time
-    forall( i,h in machines, j in jobs: Ops[h,j].mID == i ) 
-    	sum( t in slots ) (t + Ops[h,j].time ) * x[i,j,t] <= Cmax;  	
+//    forall( i,h in machines, j in jobs: Ops[j,h].mID == i ) 
+//    	sum( t in slots ) (t + Ops[j,h].time ) * x[i,j,t] <= Cmax;  	
+    forall( i,h in machines, j in jobs  ) 
+    	sum( t in slots ) (t + P[j,i]) * x[i,j,t] <= Cmax;  	
     	
-    // In machine i for each job the operation period can have only one start 1
-  //  forall( i,h in machines, j in jobs : Ops[h,j].mID == i, t in slots )
-   //    sum( tp in t-Ops[h,j].time-1..t : tp >= 0) x[i,j,tp] <= 1;
-    	  	
-   forall( i in machines, t in slots )
-		sum( j in jobs, tp in t-P[j,i]+1..t ) x[i,j,tp] <= 1;
-       
-       
+    // In machine i for each job the operation period can have only one start 1   	  	
+ //  forall( i in machines, t in slots ) sum( j in jobs, tp in (t-P[j,i]+1)..t : tp >= 0 ) x[i,j,tp] <= 1; 
+   forall( i in machines, t in slots ) sum( j in jobs, tp in (t-P[j,i]+1)..t : tp >= 0 ) x[i,j,tp] <= 1; 
+   
     // Next operation start time should be larger than the previous one
     forall( j in jobs, h in 1..nbMchs-1)
-     	sum( t in slots) ( t + Ops[h-1,j].time ) * x[Ops[h-1,j].mID,j,t] <=
-     	sum( t in slots ) t * x[Ops[h,j].mID,j,t] ;
+     	sum( t in slots) ( t + Ops[ j,h-1].time ) * x[Ops[j,h-1 ].mID,j,t] <=
+     	sum( t in slots ) t * x[Ops[j,h].mID,j,t] ;
      	
  }
  

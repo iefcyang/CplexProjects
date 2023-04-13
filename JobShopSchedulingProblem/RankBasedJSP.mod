@@ -60,8 +60,8 @@ int V = 10000;
        h[i,k]+sum( j in jobs, d in machines: Ops[j,d].mID == i ) Ops[j,d].time * x[i,j,k] <= h[i,k+1];
        
     	
-	forall( j in jobs, h in 1..nbChms-1)
-	   sum(i in machins) 
+//	forall( j in jobs, h in 1..nbChms-1)
+//	   sum(i in machins) 
      	
  }
  
