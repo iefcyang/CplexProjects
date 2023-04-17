@@ -30,15 +30,26 @@ range machines = 0..nbMchs-1;
 
 machineIDandTime Ops[jobs,machines] = ...;
 
-int n = nbJobs;
-range ranks = 0..n-1;
+range ranks = 0..nbJobs-1;
 
- dvar int+ Cmax;  // Makespan
+
+// P[i,j]: The processing time of the operation of job j on machine i
+int P[i in machines, j in jobs ] = max( s in machines : Ops[j,s].mID == i ) Ops[j,s].time;
+
+// r[i,j,p]: If the s-th operation of job j is on machine i
+int r[i in machines, j in jobs, s in machines] = Ops[j,s].mID == i ? 1:0;
+
+dvar int+ Cmax;  // Makespan
+
+// r[i,k]: The start time of the k-th operation processed on machine i.
 dvar int+ h[machines,ranks];
 
-int V = 10000;
+// x[i,j,k]: The operation of job j is the k-th operated on machine i. 
+dvar boolean x[machines, jobs, ranks];  
 
- dvar boolean x[machines, jobs, ranks];   // z[i,j,k]: job j on machine i starts at rank k
+//dexpr int z[ j in jobs,  k in machines, l in machines ] = sum(i in machines )r[i,j,l]*x[i,j,k]; // sum(i in machines, k in ranks )r[i,j,l]*x[i,j,k]
+
+int V = 10000;
 
  
  minimize Cmax;
@@ -51,17 +62,37 @@ int V = 10000;
     forall( i in machines, k in ranks ) 
     	sum( j in jobs ) x[i,j,k] == 1;
     
-    // For a job on a machine only one rank k is assigned
+    // For a job only one rank k is assigned on a machine to process its operation
     forall( i in machines, j in jobs ) 
     	sum( k in ranks ) x[i,j,k] == 1;
     	
-    // For each rank on a machine 
-    forall( i in machines, k in 0 .. n-1)
-       h[i,k]+sum( j in jobs, d in machines: Ops[j,d].mID == i ) Ops[j,d].time * x[i,j,k] <= h[i,k+1];
+    // On a machine, the start time of the (k)-th processed opeation must be greater
+    // than the completion time of the (k-1)-th one. 
+    forall( i in machines, k in 1 .. nbJobs-1)
+        h[i,k-1] + sum( j in jobs ) P[i,j] * x[i,j,k-1] <= h[i,k];
+        
+    // Makespan always greater than the completion time of the last processed operation on each machine
+    forall( i in machines )
+       h[i,nbJobs-1] + sum( j in jobs ) P[i,j]*x[i,j,nbJobs-1] <= Cmax;
        
-    	
-//	forall( j in jobs, h in 1..nbChms-1)
-//	   sum(i in machins) 
-     	
+
+// The start time of l-th operation of jbo j evaluated from sum over r must check for the fact that
+// the operation is decided to processed in the k-th order 
+// sum(i in machines )r[i,j,l]*x[i,j,k] is 1 if l-th operation of job j is to be processed on the k-order
+    forall( j in jobs, l in 0..nbMchs-2, k,kp in ranks )   
+    	sum( i in machines )r[i,j,l]*h[i,k] + sum( i in machines)r[i,j,l]*P[i,j] <=
+    		V * ( 1 - sum(i in machines )r[i,j,l]*x[i,j,k]	) +
+    		V * ( 1 - sum( i in machines )r[i,j,l+1]*x[i,j,kp] ) +
+    		sum( i in machines ) r[i,j,l+1]*h[i,kp];	   
+         
+        
+//        forall( j in jobs, l in 0..nbMchs-2, k,kp in ranks )   
+//    		sum( i in machines )r[i,j,l]*h[i,k] + sum( i in machines)r[i,j,l]*P[i,j] <=
+//    			V * ( 1 - z[j,k,l]) +
+//    			V * ( 1 - z[j,kp,l+1] ) +
+//    			sum( i in machines ) r[i,j,l+1]*h[i,kp];
+//    
+    
+
  }
  

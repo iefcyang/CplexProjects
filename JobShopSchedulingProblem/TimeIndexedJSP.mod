@@ -34,6 +34,7 @@ machineIDandTime Ops[jobs,machines] = ...;
 int worstTime = sum( j in jobs, h in machines) Ops[j,h].time;
 range slots = 0..worstTime-1;
 
+
 int P[j in jobs, i in machines ] = max( h in machines : Ops[j,h].mID == i ) Ops[j,h].time;
 
  dvar int+ Cmax;  // Makespan

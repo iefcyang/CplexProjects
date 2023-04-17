@@ -3,6 +3,14 @@
  * Author: iefcyang
  * Creation Date: Apr 13, 2023 at 12:16:37 PM
  *********************************************/
+ // Obj = 45;
+ // Models        variables Constraints  Seconds
+ // disjuntive        127      666           0.19
+ // TimeIndexed    10,849    1,732         	 2.7
+ // Rank-based        433	 2,704          48.99
+ // CP	               42	    38	         0.26
+ // Disjuntive(M2)    217      396           0.18
+ //
 nbJobs = 6;
 nbMchs = 6;
 

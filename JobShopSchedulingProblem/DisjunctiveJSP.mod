@@ -47,7 +47,7 @@ int P[j in jobs, i in machines ] = max( h in machines : Ops[j,h].mID == i ) Ops[
 int V = 1000;
 
  dvar int+ x[machines,jobs];           //  x[i,j]: start time of job j on machine i
- dvar boolean z[machines, jobs, jobs];   // z[i,j,k]: job j precedes jobk k on machine i
+ dvar boolean z[machines, jobs, jobs];   // z[i,j,k]: job j precedes job k on machine i
  dvar int+ Cmax;  // Makespan
  
  minimize Cmax;
@@ -58,22 +58,27 @@ int V = 1000;
     forall( j in jobs, h in 1..lastID ) 
     	x[Ops[j,h-1].mID,j] + Ops[j,h-1].time <= x[Ops[j,h].mID,j];    	    	
    
+      // Model 1:
       
-     // Start time of operation block of job k should be larger thand the end time
-     // of block of job j, if job k is processed after job j. Otherwise (z=0), no constraint applied    
-//     forall( i,h in machines, j,k in jobs : j < k && Ops[h,j].mID == i )
-//        x[i,j] + Ops[h,j].time <= x[i,k] + V * ( 1 - z[i,j,k]  );
-      forall( i in machines, j,k in jobs : j < k )
+//     // Start time of operation block of job k should be larger thand the end time
+//     // of block of job j, if job k is processed after job j. Otherwise (z=0), no constraint applied    
+//      forall( i in machines, j,k in jobs : j < k )
+//        x[i,j] + P[j,i] <= x[i,k] + V * ( 1 - z[i,j,k]  );
+//                
+//     // Otherwise (z=0), this constraint make sure start time of job j is greater than job k.
+//     // If z = 1, this constraint does nothing.
+//     // Two constraints make no overlapped blocks on a machine	
+//    forall( i,h in machines, j,k in jobs : j < k )
+//       x[i,k] + P[k,i] <= x[i,j] + V * z[i,j,k]; 
+//       
+       // Model 2:
+        forall( i in machines, j,k in jobs : j != k )
         x[i,j] + P[j,i] <= x[i,k] + V * ( 1 - z[i,j,k]  );
         
-        
-     // Otherwise (z=0), this constraint make sure start time of job j is greater than job k.
-     // If z = 1, this constraint does nothing.
-     // Two constraints make no overlapped blocks on a machine	
-    forall( i,h in machines, j,k in jobs : j < k )
-       x[i,k] + P[k,i] <= x[i,j] + V * z[i,j,k]; 
-       
-       
+      forall( i in machines, j,k in jobs : j != k )
+         z[i,j,k] + z[i,k,j] == 1;
+         
+              
     // Cmax is greater than the end time of the last operation of each job
     forall( j in jobs ) 
     	Cmax >= x[Ops[j,lastID].mID, j ] + Ops[j,lastID].time;
