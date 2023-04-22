@@ -46,6 +46,7 @@ dvar int+ h[machines,ranks];
 
 // x[i,j,k]: The operation of job j is the k-th operated on machine i. 
 dvar boolean x[machines, jobs, ranks];  
+dvar boolean y[machines, jobs, machines];
 
 //dexpr int z[ j in jobs,  k in machines, l in machines ] = sum(i in machines )r[i,j,l]*x[i,j,k]; // sum(i in machines, k in ranks )r[i,j,l]*x[i,j,k]
 
@@ -79,13 +80,14 @@ int V = 10000;
 // The start time of l-th operation of jbo j evaluated from sum over r must check for the fact that
 // the operation is decided to processed in the k-th order 
 // sum(i in machines )r[i,j,l]*x[i,j,k] is 1 if l-th operation of job j is to be processed on the k-order
-    forall( j in jobs, l in 0..nbMchs-2, k,kp in ranks )   
-    	sum( i in machines )r[i,j,l]*h[i,k] + sum( i in machines)r[i,j,l]*P[i,j] <=
+    forall( j in jobs, l in 0..nbMchs-2 )   
+    	sum( i in machines )r[i,j,l]*y[i,j,l] + sum( i in machines)r[i,j,l]*P[i,j] <=
     		V * ( 1 - sum(i in machines )r[i,j,l]*x[i,j,k]	) +
     		V * ( 1 - sum( i in machines )r[i,j,l+1]*x[i,j,kp] ) +
     		sum( i in machines ) r[i,j,l+1]*h[i,kp];	   
   
-
+ // l-th start time of job j must be larger than end time of the (l-1)th   Ops[j,l].mID Ops[j,l].time
+     
         
 //        forall( j in jobs, l in 0..nbMchs-2, k,kp in ranks )   
 //    		sum( i in machines )r[i,j,l]*h[i,k] + sum( i in machines)r[i,j,l]*P[i,j] <=

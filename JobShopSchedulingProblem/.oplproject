@@ -4,22 +4,32 @@
     	
     <configs>
         		
-        <config default="true" name="RunDisjunctive6x6" category="opl">
+        <config default="false" name="RunRank" category="opl">
             			
-            <ref name="DisjunctiveJSP.mod" type="model">
+            <ref name="RankBasedJSP.mod" type="model">
 			</ref>
             			
-            <ref name="6x6JSP.dat" type="data">
+            <ref name="8x6JSP.dat" type="data">
 			</ref>
             		
         </config>
         		
-        <config default="false" name="RunTimeIndexed6x6" category="opl">
+        <config default="true" name="RunDisjunctive" category="opl">
+            			
+            <ref name="DisjunctiveJSP.mod" type="model">
+			</ref>
+            			
+            <ref name="8x6JSP.dat" type="data">
+			</ref>
+            		
+        </config>
+        		
+        <config default="false" name="RunTimeIndexed" category="opl">
             			
             <ref name="TimeIndexedJSP.mod" type="model">
 			</ref>
             			
-            <ref name="6x6JSP.dat" type="data">
+            <ref name="8x6JSP.dat" type="data">
 			</ref>
             		
         </config>
