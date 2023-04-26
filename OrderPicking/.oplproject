@@ -113,6 +113,16 @@
 			</ref>
             		
         </config>
+        		
+        <config default="false" name="StationFullRun" category="opl">
+            			
+            <ref name="StationFullScale.mod" type="model">
+			</ref>
+            			
+            <ref name="StationFullScale002.dat" type="data">
+			</ref>
+            		
+        </config>
         	
     </configs>
     	
