@@ -4,9 +4,19 @@
     	
     <configs>
         		
-        <config default="true" name="Configuration1" category="opl">
+        <config default="true" name="CPmodel" category="opl">
             			
             <ref name="FTNSP.mod" type="model">
+			</ref>
+            			
+            <ref name="FTNSP001.dat" type="data">
+			</ref>
+            		
+        </config>
+        		
+        <config default="false" name="MILPmodel" category="opl">
+            			
+            <ref name="FTNSP(MILP).mod" type="model">
 			</ref>
             			
             <ref name="FTNSP001.dat" type="data">

@@ -19,7 +19,7 @@
             <ref name="DisjunctiveJSP.mod" type="model">
 			</ref>
             			
-            <ref name="8x6JSP.dat" type="data">
+            <ref name="6x6JSP.dat" type="data">
 			</ref>
             		
         </config>

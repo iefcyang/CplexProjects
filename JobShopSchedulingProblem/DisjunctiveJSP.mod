@@ -44,6 +44,9 @@ machineIDandTime Ops[jobs,machines] = ...;
 
 int P[j in jobs, i in machines ] = max( h in machines : Ops[j,h].mID == i ) Ops[j,h].time;
 
+int FromTo[1..6,1..6] = [[3,4,5,3,4,5],[3,4,5,3,4,5],[3,4,5,3,4,5],[3,4,5,3,4,5],[3,4,5,3,4,5],[3,4,5,3,4,5]];
+int IDX[jobs] = [1,3, 4, 5, 6, 2, 3, 4];
+
 int V = 1000;
 
  dvar int+ x[machines,jobs];           //  x[i,j]: start time of job j on machine i
@@ -73,7 +76,8 @@ int V = 1000;
 //       
        // Model 2:
         forall( i in machines, j,k in jobs : j != k )
-        x[i,j] + P[j,i] <= x[i,k] + V * ( 1 - z[i,j,k]  );
+        x[i,j] + P[j,i]  <= x[i,k] + V * ( 1 - z[i,j,k]  );
+        //x[i,j] + P[j,i]  + FromTo[IDX[j],IDX[k] ] <= x[i,k] + V * ( 1 - z[i,j,k]  );
         
       forall( i in machines, j,k in jobs : j != k )
          z[i,j,k] + z[i,k,j] == 1;

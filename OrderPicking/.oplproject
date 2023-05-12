@@ -123,6 +123,16 @@
 			</ref>
             		
         </config>
+        		
+        <config default="false" name="PickWithTime" category="opl">
+            			
+            <ref name="PickingWithTimeDetermined.mod" type="model">
+			</ref>
+            			
+            <ref name="PickingWithTime.dat" type="data">
+			</ref>
+            		
+        </config>
         	
     </configs>
     	
