@@ -9,7 +9,7 @@
             <ref name="FTNSP.mod" type="model">
 			</ref>
             			
-            <ref name="FTNSP001.dat" type="data">
+            <ref name="medium.dat" type="data">
 			</ref>
             		
         </config>
@@ -19,7 +19,7 @@
             <ref name="FTNSP(MILP).mod" type="model">
 			</ref>
             			
-            <ref name="FTNSP001.dat" type="data">
+            <ref name="small.dat" type="data">
 			</ref>
             		
         </config>
