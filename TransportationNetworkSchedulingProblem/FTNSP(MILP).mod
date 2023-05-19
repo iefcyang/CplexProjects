@@ -27,7 +27,7 @@ tuple FromToStruct
 {FromToStruct} formToTimeIndexes = {<n,f,t>|n in Nodes, f,t in 0..NumberOfPDPoints[n]-1 };
 
 // Read in from-to times of nodes from data file.
-float FromToTimes[formToTimeIndexes ]=...;
+int FromToTimes[formToTimeIndexes ]=...;
 
  
 
@@ -40,7 +40,7 @@ float FromToTimes[formToTimeIndexes ]=...;
 // = fromPDID * number of PD points +toPDID.
 // Therefore, the previous and the next type IDs will be associated with the required
 // loadfree moving time.
-tuple typeIDsStruct { int t1; int t2; float v; }
+//tuple typeIDsStruct { int t1; int t2; int v; }
 
 
   
@@ -84,7 +84,7 @@ tuple OPStruct
 // Set the sequence of the last operation in each job
 int jobLast[j in Jobs ] = max( o in operations : o.jobID == j ) o.seq;
 
-int opCounts[ i in Nodes ] = sum( o in allOPs: o.nodeID == i ) 1;
+//int opCounts[ i in Nodes ] = sum( o in operations: o.nodeID == i ) 1;
 
 // Define set of last operations of the given jobs.
 {OPStruct} lastOPs = {o|o in operations : o.seq == jobLast[o.jobID]};
@@ -94,25 +94,49 @@ int opCounts[ i in Nodes ] = sum( o in allOPs: o.nodeID == i ) 1;
 //int deliveryTypes[o in allOPs ] =  o.fromPDID * NumberOfPDPoints[o.nodeID]+o.toPDID ;
 
 
- dvar float+ x[allOPs];           //  x[i]: start time of operation i
- dvar boolean z[allOPs,allOPs];   // z[op,o]: if( operation o follows op consecutively executed)
+ dvar int+ x[allOPs];           //  x[i]: start time of operation i
+ dvar boolean z[allOPs,operations];   // z[op,o]: if( operation o follows op consecutively executed)
 
  minimize max(i in lastOPs)(  x[i] + FromToTimes[<i.nodeID,i.fromPDID,i.toPDID>] );
  subject to
  {
-     forall( o,op in allOPs : o.jobID == op.jobID && o.seq - op.seq == 1 ) 
+     forall( op, o in operations : o.jobID == op.jobID && o.seq - op.seq == 1 ) 
      	 x[op] + FromToTimes[<op.nodeID,op.fromPDID,op.toPDID>] <= x[o];
      	 
      forall( o in dummyOperations )
          x[o] == 0;
-         
-      forall( o,op in allOPs : o.nodeID == op.nodeID && o != op ) 	 
+        
+     // Constraints for operations o and op on the same node 
+      forall( op in allOPs, o in operations : o.nodeID == op.nodeID && o != op ) 	 
      	 x[op] + FromToTimes[<op.nodeID,op.fromPDID,op.toPDID>] + FromToTimes[<op.nodeID,op.toPDID, o.fromPDID>] <= x[o] + V * ( 1 - z[op,o] );
      	 
-      forall(  o,op in allOPs : o.nodeID == op.nodeID && o != op)
-         z[op,o] + z[o,op] == 1;
-         
+     // For those operations on the same node
+      
+      // each operation o on a node must have a previous linked operation (may be the dummy one)	 
       forall( i in Nodes )
-      	 sum( o, op in allOPs : o.nodeID == i && op.nodeID == i ) z[op,o] == opCounts[i];
-      	 
+         forall( o in operations: o.nodeID == i )
+           sum( op in allOPs: op.nodeID == i && op != o ) z[op,o] == 1;	 
+ 
+      
+      // Only one operation in a node served as the first operation that succeed the dummy operation    
+       forall( i in Nodes )
+           sum( op in dummyOperations: op.nodeID == i , o in operations: o.nodeID == i && o != op ) z[op,o] == 1;	 
+  
+        forall( i in Nodes )
+          forall( op in operations: op.nodeID == i )
+            sum( o in operations: o.nodeID == i && op != o ) z[op,o] <= 1;	 
+            
+        forall( i in Nodes )
+          forall( o,op in operations: op.nodeID == i && o.nodeID == i && o != op )
+            z[op,o]+z[o,op] <= 1;
+                       
+            
+//       forall( o,op in allOPs : o.nodeID == op.nodeID && o != op ) 	 
+//     	 z[op,o] + z[o,op] <= 1;
+      	      	 
+     // For those operations not on the same node
+//     forall( o,op in allOPs: o.nodeID != op.nodeID && o != op )
+//       z[op,o] == 0;
+//         
+
  }
