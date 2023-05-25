@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="ASCII"?><project>
-	<version>1.0</version>
-	<configs>
-		<config default="true" name="CPmodel" category="opl">
-			<ref name="FTNSP.mod" type="model">
+    	
+    <version>1.0</version>
+    	
+    <configs>
+        		
+        <config default="true" name="CPmodel" category="opl">
+            			
+            <ref name="FTNSP.mod" type="model">
 			</ref>
-			<ref name="SuperSmall.dat" type="data">
+            			
+            <ref name="medium.dat" type="data">
 			</ref>
-		</config>
-		<config default="false" name="MILPmodel" category="opl">
-			<ref name="FTNSP(MILP).mod" type="model">
+            		
+        </config>
+        		
+        <config default="false" name="MILPmodel" category="opl">
+            			
+            <ref name="FTNSP(MILP).mod" type="model">
 			</ref>
-			<ref name="SuperSmall.dat" type="data">
+            			
+            <ref name="small.dat" type="data">
 			</ref>
-		</config>
-		<config default="false" name="MILP(NEW)" category="opl">
-			<ref name="FTNSP(MILPnew).mod" type="model">
+            		
+        </config>
+        		
+        <config default="false" name="MILP(NEW)" category="opl">
+            			
+            <ref name="FTNSP(MILPnew).mod" type="model">
 			</ref>
-			<ref name="SuperSmall.dat" type="data">
+            			
+            <ref name="SuperSmall.dat" type="data">
 			</ref>
-		</config>
-	</configs>
-	
+            		
+        </config>
+        	
+    </configs>
+    	
+
 </project>
