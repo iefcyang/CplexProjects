@@ -4,17 +4,30 @@
     	
     <configs>
         		
-        <config default="true" name="CPmodel" category="opl">
+        <config default="false" name="Default" category="opl">
             			
-            <ref name="FTNSP.mod" type="model">
+            <ref name="transportation.mod" type="model">
 			</ref>
             			
-            <ref name="medium.dat" type="data">
+            <ref name="config.ops" type="setting">
+			</ref>
+            			
+            <ref name="example_10_cplex.dat" type="data">
 			</ref>
             		
         </config>
         		
-        <config default="false" name="MILPmodel" category="opl">
+        <config default="true" name="FTNSPCP" category="opl">
+            			
+            <ref name="FTNSP.mod" type="model">
+			</ref>
+            			
+            <ref name="small.dat" type="data">
+			</ref>
+            		
+        </config>
+        		
+        <config default="false" name="FTNSP(MILP)" category="opl">
             			
             <ref name="FTNSP(MILP).mod" type="model">
 			</ref>
@@ -24,9 +37,9 @@
             		
         </config>
         		
-        <config default="false" name="MILP(NEW)" category="opl">
+        <config default="false" name="FTNSP(MILPE)" category="opl">
             			
-            <ref name="FTNSP(MILPnew).mod" type="model">
+            <ref name="FTNSP(MILPExtra).mod" type="model">
 			</ref>
             			
             <ref name="SuperSmall.dat" type="data">

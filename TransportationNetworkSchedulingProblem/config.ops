@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings version="2">
+  <category name="cplex">
+    <setting name="cardls" value="0"/>
+    <setting name="tilim" value="1000.0"/>
+  </category>
+  <category name="run">
+    <setting name="run_engineexportextension" value="lp"/>
+    <setting name="run_exportexternaldata" value="/Users/markchen/Documents/Transportaion MILP/Transportaion MILP/Untitled"/>
+  </category>
+</settings>

@@ -60,7 +60,7 @@ int jobLast[j in Jobs ] = max( o in operations : o.jobID == j ) o.seq;
 int opCounts[ i in Nodes ] = sum( o in operations: o.nodeID == i ) 1 ;
 
 // The initial moving time of the vehicle to the from PD point of the operation.
-int firstProcessedTime[o in operations] =  FromToTimes[<o.nodeID,0,o.fromPDID>] 
+int firstProcessedTime[o in operations] =  FromToTimes[<o.nodeID,0,o.fromPDID>];
 
  //  x[o]: start time of operation o
  dvar int+ x[operations];    
@@ -86,12 +86,12 @@ int firstProcessedTime[o in operations] =  FromToTimes[<o.nodeID,0,o.fromPDID>]
     // Constraints on the successive flag z[op,o] where operation o is the successive operation after op is processed on the same node.
     // Total number of the flag is the number of operations on the same node minus 1.
        forall( i in Nodes )
-            sum( op, o in in operations: op.nodeID == i && o.nodeID == i && o != op ) z[op,o] == opCounts[i] - 1;	 
+            sum( op, o in operations: op.nodeID == i && o.nodeID == i && o != op ) z[op,o] == opCounts[i] - 1;	 
 	 
      // Row-wise if z[op,o] = 1 then op->o  For a given operation, at most one operation is succeded. 
     //  If no operations are succeeded, it is the last processed operation in the node.
       forall( i in Nodes )
-         forall( op in operations: o.nodeID == i )
+         forall( op in operations: op.nodeID == i )
               sum( o in operations: o.nodeID == i && op != o ) z[op,o]  <= 1;	       
 
         // Column-wise 
@@ -109,6 +109,6 @@ int firstProcessedTime[o in operations] =  FromToTimes[<o.nodeID,0,o.fromPDID>]
          //  The first operation at each node need to be started after the first transpotation form 0 to its start PD point
         forall( i in Nodes )
             forall( o in operations: o.nodeID == i )
-                  firstProcessedTime[o] <= x[o] +  V * sum( op in operations: op.nodeID == i && op != o ) z[op,o]
+                  firstProcessedTime[o] <= x[o] +  V * sum( op in operations: op.nodeID == i && op != o ) z[op,o];
                  
  }
